@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SklepWelniany.Models
 {
@@ -21,5 +22,8 @@ namespace SklepWelniany.Models
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
+
+        // image collection
+        public ICollection<ProductImage> Images { get; set; }
     }
 }

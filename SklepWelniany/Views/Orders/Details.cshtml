@@ -1,0 +1,30 @@
+@model SklepWelniany.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h1>Order #@Model.Id</h1>
+<p>Placed: @Model.OrderDate</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.Product?.Name</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Product != null ? item.Product.Price.ToString("C") : "-")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" asp-controller="Home">Back to shop</a>

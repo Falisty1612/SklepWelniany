@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SklepWelniany.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace SklepWelniany.Controllers
 {
@@ -35,6 +37,7 @@ namespace SklepWelniany.Controllers
 
             var product = await _context.Products
                 .Include(p => p.Category)
+                .Include(p => p.Images)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -56,12 +59,35 @@ namespace SklepWelniany.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,CategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,CategoryId")] Product product, IFormFile image)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+
+                if (image != null && image.Length > 0)
+                {
+                    var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                    if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                    var filePath = Path.Combine(uploads, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+
+                    var img = new ProductImage
+                    {
+                        ProductId = product.Id,
+                        Url = "/uploads/" + fileName,
+                        IsPrimary = true
+                    };
+                    _context.ProductImages.Add(img);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
@@ -76,7 +102,7 @@ namespace SklepWelniany.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -90,7 +116,7 @@ namespace SklepWelniany.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,CategoryId")] Product product, IFormFile image)
         {
             if (id != product.Id)
             {
@@ -103,6 +129,28 @@ namespace SklepWelniany.Controllers
                 {
                     _context.Update(product);
                     await _context.SaveChangesAsync();
+
+                    if (image != null && image.Length > 0)
+                    {
+                        var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                        if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                        var filePath = Path.Combine(uploads, fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await image.CopyToAsync(stream);
+                        }
+
+                        var img = new ProductImage
+                        {
+                            ProductId = product.Id,
+                            Url = "/uploads/" + fileName,
+                            IsPrimary = false
+                        };
+                        _context.ProductImages.Add(img);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
