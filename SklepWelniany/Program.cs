@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SklepWelniany.Models;
+using SklepWelniany.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,23 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Apply migrations and seed roles/admin
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<SklepWelnianyDbContext>();
+        await db.Database.MigrateAsync();
+        await DbInitializer.InitializeAsync(services);
+    }
+    catch (Exception ex)
+    {
+        // log if needed
+        Console.WriteLine($"Error applying migrations or seeding database: {ex.Message}");
+    }
+}
 
 //Middleware
 if (app.Environment.IsDevelopment())
