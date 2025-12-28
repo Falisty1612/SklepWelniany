@@ -8,7 +8,7 @@ namespace SklepWelniany.Models
         public SklepWelnianyDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<SklepWelnianyDbContext>();
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SklepWelnianyDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=localhost;Database=SklepWelnianyDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True");
 
             return new SklepWelnianyDbContext(optionsBuilder.Options);
         }
