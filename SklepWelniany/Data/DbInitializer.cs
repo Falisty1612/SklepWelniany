@@ -39,7 +39,7 @@ namespace SklepWelniany.Data
                     EmailConfirmed = true
                 };
 
-                var result = await userManager.CreateAsync(adminUser, "Admin123!");
+                var result = await userManager.CreateAsync(adminUser, "Admin_123!@#");
 
                 // WA¯NE: Jeœli siê nie uda, wyrzuæ b³¹d
                 if (!result.Succeeded)
