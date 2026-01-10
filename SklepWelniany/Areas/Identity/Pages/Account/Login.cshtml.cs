@@ -64,11 +64,6 @@ namespace SklepWelniany.Areas.Identity.Pages.Account
             var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                {
-                    return LocalRedirect(returnUrl);
-                }
-
                 return LocalRedirect("~/");
             }
 
