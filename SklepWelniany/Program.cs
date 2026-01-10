@@ -28,17 +28,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    try
-    {
-        var db = services.GetRequiredService<SklepWelnianyDbContext>();
-        await db.Database.MigrateAsync();
-        await DbInitializer.InitializeAsync(services);
-    }
-    catch (Exception ex)
-    {
-        // log if needed
-        Console.WriteLine($"Error applying migrations or seeding database: {ex.Message}");
-    }
+
+    // USUNIÊTO BLOK TRY-CATCH, ABY ZOBACZYÆ B£¥D:
+    var db = services.GetRequiredService<SklepWelnianyDbContext>();
+    await db.Database.MigrateAsync();
+    await DbInitializer.InitializeAsync(services);
 }
 
 //Middleware
