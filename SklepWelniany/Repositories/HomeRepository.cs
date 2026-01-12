@@ -8,11 +8,14 @@
         {
             _db = db;
         }
-        public async Task<IEnumerable<Product>> DisplayProducts(string sTerm="", int typeId=0)
+        public async Task<IEnumerable<Product>> GetProducts(string sTerm= "", int typeId = 0)
         {
-            var products = (from product in _db.Products
+            sTerm = sTerm.ToLower();
+            IEnumerable<Product> products = await (from product in _db.Products
                             join type in _db.Types
                             on product.TypeId equals type.Id
+                            where string.IsNullOrEmpty(sTerm) || (product != null && product.ProductName.ToLower().StartsWith(sTerm))
+
                             select new Product
                             {
                                 Id = product.Id,
@@ -20,9 +23,16 @@
                                 Price = product.Price,
                                 ProductName = product.ProductName,
                                 TypeId = product.TypeId,
-                                TypeName = type.TypeName
+                                TypeName = type.ProductType
                             }
                             ).ToListAsync();
+
+            // Filtrowanie po stronie klienta - nieoptymalne!!!!!
+            if (typeId > 0)
+            {
+                products = products.Where(a=>a.TypeId == typeId).ToList();
+            }
+            return products;
         }
     }
 }
