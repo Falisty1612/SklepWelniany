@@ -29,7 +29,6 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    // USUNIÊTO BLOK TRY-CATCH, ABY ZOBACZYÆ B£¥D:
     var db = services.GetRequiredService<SklepWelnianyDbContext>();
     await db.Database.MigrateAsync();
     await DbInitializer.InitializeAsync(services);
