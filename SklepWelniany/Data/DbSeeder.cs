@@ -25,7 +25,7 @@ namespace SklepWelniany.Data
             var userInDb = await userMgr.FindByEmailAsync(admin.Email);
             if (userInDb is null)
             {
-                await userMgr.CreateAsync(admin, "admin999");
+                await userMgr.CreateAsync(admin, "Admin@99");
                 await userMgr.AddToRoleAsync(admin, Roles.Admin.ToString());
             }
         }
