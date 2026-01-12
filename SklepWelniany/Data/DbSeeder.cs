@@ -17,8 +17,8 @@ namespace SklepWelniany.Data
             // create admin user
             var admin = new IdentityUser
             {
-                UserName = "admin",
-                Email = "admin@gmail.com",
+                UserName = "admin@localhost.com",
+                Email = "admin@localhost.com",
                 EmailConfirmed = true
             };
 

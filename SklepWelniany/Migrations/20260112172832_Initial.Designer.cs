@@ -12,7 +12,7 @@ using SklepWelniany.Data;
 namespace SklepWelniany.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260112170922_Initial")]
+    [Migration("20260112172832_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
