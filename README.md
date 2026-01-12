@@ -20,4 +20,3 @@ Widoki i formularze z walidacją
 
 Błędy / problemy – jeśli jakieś się pojawiają, wklej dokładny komunikat z PowerShell lub przeglądarki.
 
-Dzięki temu od razu wiem, od czego zaczynamy i gdzie kontynuować.
