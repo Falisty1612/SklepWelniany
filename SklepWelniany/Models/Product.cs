@@ -10,7 +10,7 @@ namespace SklepWelniany.Models
 
 
         [Required]
-        [MaxLength(40)]
+        [MaxLength(80)]
         public string ProductName { get; set; }
 
 
@@ -18,7 +18,7 @@ namespace SklepWelniany.Models
         public double Price { get; set; }
 
 
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
 
         [Required]
@@ -32,5 +32,9 @@ namespace SklepWelniany.Models
 
 
         public List<CartDetail> CartDetails { get; set; }
+
+
+        [NotMapped]
+        public string TypeName { get; set; }
     }
 }
