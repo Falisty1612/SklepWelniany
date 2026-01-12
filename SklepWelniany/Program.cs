@@ -19,7 +19,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 using(var scope = app.Services.CreateScope())
-    //First time admin creation 
+//First time admin creation 
 //{
 //    await DbSeeder.SeedDefaultData(scope.ServiceProvider);
 //}
