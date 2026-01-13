@@ -34,6 +34,7 @@ namespace SklepWelniany.Controllers
             return View(cart);
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetTotalItemInCart()
         {
             int cartItem = await _cartRepo.GetCartItemCount();

@@ -54,19 +54,23 @@
 <script>
     loadCartCount()
     async function loadCartCount(){
+        var cartCountEl = document.getElementById("cartCount");
+        if (cartCountEl){
+            try{
+                var response = await fetch("/Cart/GetTotalItemInCart");
 
-        try{
-            var response = await fetch('/Cart/GetTotalItemInCart');
-            if(response.status == 200){
-                var result = await response.json();
-                var cartCountEl = document.getElementById("cartCount");
-                cartCountEl.innerHTML = result;
+                if(response.status == 200){
+                    var result = await response.json();
+                    cartCountEl.innerHTML = result;
+                } else {
+                    console.log("Nie udało się pobrać koszyka (status: " + response.status + ")");
+                }
+            }
+            catch(err){
+                console.log(err);
             }
         }
-
-        catch(err){
-            console.log(err);
-        }
+        
     }
 </script>
 </html>
