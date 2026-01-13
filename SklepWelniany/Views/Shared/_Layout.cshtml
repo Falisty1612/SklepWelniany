@@ -54,10 +54,10 @@
 <script>
     loadCartCount()
     async function loadCartCount(){
-        var cartCountEl = document.getElementById("cartCount");
+        var cartCountEl = document.getElementById(`cartCount`);
         if (cartCountEl){
             try{
-                var response = await fetch("/Cart/GetTotalItemInCart");
+                var response = await fetch(`/Cart/GetTotalItemInCart`);
 
                 if(response.status == 200){
                     var result = await response.json();

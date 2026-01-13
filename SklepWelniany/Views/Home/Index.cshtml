@@ -51,8 +51,7 @@
                     <b>Cena: </b>@product.Price zł <br />
                     <b>Kategoria: </b> @product.TypeName
                 </p>
-                
-                <button type="button" onclick="add(@product.Id)" class="btn btn-primary">Add to cart</button>
+                     <a onclick="add(@product.Id)" class="btn btn-primary">Add to cart</a>
                 </div>
         </div>
     </div>
@@ -63,7 +62,7 @@
     <script>
         async function add(productId){
             try{
-                var response = await fetch('/Cart/AddItem?productId=${productId}');
+                var response = await fetch(`/Cart/AddItem?productId=${productId}`);
                 if(response.status == 200){
                     var result = await response.json();
                     var cartCountEl = document.getElementById("cartCount");
