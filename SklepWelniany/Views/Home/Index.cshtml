@@ -3,29 +3,30 @@
 
 }
 
-<div class="my-3">
+<div class="my-2">
     <form asp-action="Index" class="row row-cols-lg-auto g-3 align-items-center">
     <div class="col-12">
-        <label class="visually-hidden" for="inlineFormSelectPref">Type</label>
+        <label class="visually-hidden" for="typeId">Type</label>
         <select class="form-select" id="typeId" name="typeId">
-            <option selected>Choose...</option>
+            <option selected>Kategoria</option>
             @foreach(var type in Model.Types)
             {
-                <option value="@type.Id">@type.ProductType</option>
+                    <option selected="@(type.Id == Model.TypeId)" value="@type.Id">@type.ProductType</option>
             }
         </select>
     </div>
 
     <div class="col-12">
-        <label class="visually-hidden" for="inlineFormInputGroupUsername">Search by Product</label>
+            <label class="visually-hidden" for="sterm">Search by Product</label>
         <div class="input-group">
             <div class="input-group-text"></div>
-            <input type="text" class="form-control" id="sterm" name="sterm" placeholder="Search by Product">
+            <input type="text" maxlength="30" class="form-control" value="@Model.STerm" id="sterm" name="sterm" placeholder="Search by Product">
         </div>
     </div>
 
   <div class="col-12">
     <button type="submit" class="btn btn-primary">Search</button>
+    <a href="/Home/Index" class="btn btn-dark">Reset</a>
   </div>
 </form>
 </div>
@@ -43,14 +44,16 @@
             {
                 <img style="width:100%;height:300px" src="/images/@product.Image" class="card-img-top" alt="..." />
             }
-            @* <img src="" > *@
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
             <h5 class="card-title">@product.ProductName</h5>
+                <div class="addcartbutton mt-auto">
                 <p class="card-text">
-                    Price: @product.Price zł <br />
-                    Type: @product.TypeName
+                    Cena: @product.Price zł <br />
+                    Kategoria: @product.TypeName
                     </p>
-            <a href="#" class="btn btn-primary">Add to cart</a>
+                
+                    <a href="#" class="btn btn-primary">Add to cart</a>
+                </div>
         </div>
     </div>
     }

@@ -23,10 +23,10 @@ namespace SklepWelniany.Controllers
             ProductDisplayModel productModel = new ProductDisplayModel
             {
                 Products = products,
-                Types = types
+                Types = types,
+                STerm = sterm,
+                TypeId = typeId
             };
-
-
             return View(productModel);
         }
 
