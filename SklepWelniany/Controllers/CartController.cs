@@ -17,8 +17,9 @@ namespace SklepWelniany.Controllers
             var cartCount = await _cartRepo.AddItem(productId, qty);
             if (redirect == 0)
                 return Ok(cartCount);
-            return RedirectToAction("GetUserCart");
-            
+            //return RedirectToAction("GetUserCart");
+            return RedirectToAction("Index", "Home");
+
         }
 
         public async Task<IActionResult> RemoveItem(int productId)
