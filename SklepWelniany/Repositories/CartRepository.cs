@@ -110,8 +110,8 @@ namespace SklepWelniany.Repositories
             {
                 throw new Exception("Invalid user");
             }
-            var cart = await _db.Carts.Include(a => a.CartDetails).ThenInclude(a => a.Product).ThenInclude(a => a.Type).Where(a => a.UserId == userId).ToListAsync;
-            return Cart;
+            var cart = await _db.Carts.Include(a => a.CartDetails).ThenInclude(a => a.Product).ThenInclude(a => a.Type).Where(a => a.UserId == userId).ToListAsync();
+            return cart;
 
         }
 
