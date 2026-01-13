@@ -58,9 +58,8 @@
                                                         <img src="/images/@item.Product.Image" style="width:100px; height:80px; object-fit:cover; border-radius:4px;" />
                                                     }
                                                 </td>
-                                                <td>@item.Product.TypeName</td>
+                                                <td>@item.Product.Type.ProductType</td>
                                                 <td>
-                                                    @* Połączyłem cenę i ilość w jedną czytelną kolumnę *@
                                                     @(item.Product.Price) zł x @item.Quantity
                                                 </td>
                                             </tr>

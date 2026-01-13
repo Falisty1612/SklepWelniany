@@ -20,7 +20,7 @@ namespace SklepWelniany.Repositories
         public async Task ChangeOrderStatus(UpdateOrderStatusModel data)
         {
              var order = await _db.Orders.FindAsync(data.OrderId);
-            if (order != null)
+            if (order == null)
             {
                 throw new InvalidOperationException($"Order with ID {data.OrderId} not found.");
             }
