@@ -5,67 +5,77 @@
     <a href="/Identity/Account/Manage" class="my-3 btn btn-dark">Powrót</a>
 
     <h3>My Orders</h3>
-    @if (Model != null && Model.Count()>0)
+    @if (Model != null && Model.Count() > 0)
     {
-        <table class="table table-striped">
-            <tr>
-                <th>Order Date</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-            @foreach(var order in Model)
-            {
+        <table class="table table-striped align-middle">
+            <thead>
                 <tr>
-                    <td>@order.CreateDate.ToString("dd-MM-yyyy")</td>
-                    <td>@order.OrderStatus.StatusName</td>
-                    @if (order.OrderDetails != null && order.OrderDetails.Count > 0)
-                    {
-                        <td>
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Image</th>
-                                    <th>Type</th>
-                                    <th>Unit Price</th>
-                                    <th>Total Price</th>
-                                    <th>Action</th>
-                                </tr>
-                                @foreach (var item in order.OrderDetails)
-                                {
-                                    <tr>
-                                        <td>@item.Product.ProductName</td>
-                                        <td>
-                                            @if (string.IsNullOrEmpty(item.Product.Image))
-                                            {
-                                                <img src="/images/noimage.jpg" style="width:50%;height:50%" />
-                                            }
-                                            else
-                                            {
-                                                <img src="/images/@item.Product.Image" style="width:100%;height:300px" />
-                                            }
-                                        </td>
-                                        <td>@item.Product.TypeName</td>
-                                        <td>@(item.Product.Price) zł x @item.Quantity</td>
-                                        <td>@(item.Product.Price* item.Quantity) zł</td>
-                                        <td>
-                                            <a class="btn btn-info" href="/Cart/AddItem?productId=@item.ProductId&&redirect=1">+</a>
-                                            <a class="btn btn-info" href="/Cart/RemoveItem?productId=@item.ProductId">-</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        </td>
-                    }
-
+                    <th>Order Date</th>
+                    <th>Status</th>
+                    <th>Total Amount</th> @* NOWA KOLUMNA: Suma całego zamówienia *@
+                    <th>Details</th>
                 </tr>
-            }
-        </table>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    // Obliczamy sumę zamówienia tutaj, przed wyświetleniem wiersza
+                    var grandTotal = order.OrderDetails.Sum(item => item.Product.Price * item.Quantity);
 
-        
+                    <tr>
+                        <td>@order.CreateDate.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            <span class="badge bg-primary">@order.OrderStatus.StatusName</span>
+                        </td>
+                        @* Wyświetlamy sumę całego zamówienia RAZ w głównym wierszu *@
+                        <td class="fw-bold">@grandTotal zł</td>
+
+                        <td>
+                            @if (order.OrderDetails != null && order.OrderDetails.Count > 0)
+                            {
+                                <table class="table table-bordered table-sm mb-0 bg-white">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th style="width:120px">Image</th>
+                                            <th>Type</th>
+                                            <th>Price & Qty</th>
+                                            @* Usunąłem kolumnę Total stąd, bo jest już w głównym wierszu *@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in order.OrderDetails)
+                                        {
+                                            <tr>
+                                                <td>@item.Product.ProductName</td>
+                                                <td class="text-center">
+                                                    @if (string.IsNullOrEmpty(item.Product.Image))
+                                                    {
+                                                        <img src="/images/noimage.jpg" style="width:100px; height:80px; object-fit:cover; border-radius:4px;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="/images/@item.Product.Image" style="width:100px; height:80px; object-fit:cover; border-radius:4px;" />
+                                                    }
+                                                </td>
+                                                <td>@item.Product.TypeName</td>
+                                                <td>
+                                                    @* Połączyłem cenę i ilość w jedną czytelną kolumnę *@
+                                                    @(item.Product.Price) zł x @item.Quantity
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
     else
     {
         <h3>No orders</h3>
     }
 </div>
-
