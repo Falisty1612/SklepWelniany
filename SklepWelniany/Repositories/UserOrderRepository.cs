@@ -16,22 +16,56 @@ namespace SklepWelniany.Repositories
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
         }
-        public async Task<IEnumerable<Order>> UserOrders()
+
+        public async Task ChangeOrderStatus(UpdateOrderStatusModel data)
         {
-            
-            var userId = GetUserId();
-            if(string.IsNullOrEmpty(userId))
-                throw new Exception("User not logged in");
+             var order = await _db.Orders.FindAsync(data.OrderId);
+            if (order != null)
+            {
+                throw new InvalidOperationException($"Order with ID {data.OrderId} not found.");
+            }
+            order.OrderStatusId = data.OrderStatusId;
+            await _db.SaveChangesAsync();
+        }
 
-            var orders = await _db.Orders
-                            .Include(x => x.OrderStatus)
-                            .Include(x=>x.OrderDetails)
-                            .ThenInclude(x=>x.Product)
-                            .ThenInclude(x=>x.Type)
-                            .Where(a=>a.UserId==userId)
-                            .ToListAsync();
+        public async Task<Order> GetOrderById(int id)
+        {
+            return await _db.Orders.FindAsync(id);
+        }
 
-            return orders;
+        public async Task<IEnumerable<OrderStatus>> GetOrderStatuses()
+        {
+            return await _db.OrderStatuses.ToListAsync();
+        }
+
+        public async Task TogglePaymentStatus(int orderId)
+        {
+            var order = await _db.Orders.FindAsync(orderId);
+            if(order == null)
+            {
+                throw new InvalidOperationException($"Order with ID {orderId} not found.");
+            }
+            order.IsPaid = !order.IsPaid;
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Order>> UserOrders(bool getAll = false)
+        {
+            var orders = _db.Orders.Include(x=>x.OrderStatus)
+                                   .Include(x=>x.OrderDetails)
+                                   .ThenInclude(x=>x.Product)
+                                   .ThenInclude(x=>x.TypeName)
+                                   .AsQueryable();
+            if (!getAll)
+            {
+                var userId = GetUserId();
+                if(string.IsNullOrEmpty(userId))
+                    throw new Exception("User not logged in");
+                orders = orders.Where(a => a.UserId == userId);
+                return await orders.ToListAsync();
+            }
+
+            return await orders.ToListAsync();
         }
 
         private string GetUserId()
