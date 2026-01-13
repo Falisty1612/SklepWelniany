@@ -33,6 +33,7 @@ namespace SklepWelniany.Controllers
             return RedirectToAction(nameof(AllOrders));
         }
 
+        [HttpGet]
         public async Task<IActionResult> UpdatePaymentStatus(int orderId)
         {
             var order = await _userOrderRepository.GetOrderById(orderId);
@@ -77,6 +78,7 @@ namespace SklepWelniany.Controllers
                                 Selected = orderStatus.Id == data.OrderStatusId // selected text in list
                             };
                         });
+                    TempData["msg"] = "Błąd walidacji danych! Sprawdź komunikaty na czerwo.";
                     return View(data);
                 }
                 await _userOrderRepository.ChangeOrderStatus(data);
@@ -85,7 +87,7 @@ namespace SklepWelniany.Controllers
             catch (Exception ex)
             {
                 // Log the exception 
-                TempData["msg"] = "An error occurred while updating the order status.";
+                TempData["msg"] = $"Wystąpił błąd {ex.Message}";
             }
             return RedirectToAction(nameof(UpdatePaymentStatus), new { orderId = data.OrderId });
         }
