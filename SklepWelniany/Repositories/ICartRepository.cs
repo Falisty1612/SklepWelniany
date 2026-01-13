@@ -7,5 +7,6 @@
         Task<Cart> GetUserCart();
         Task<int> GetCartItemCount(string userId = "");
         Task<Cart> GetCart(string userId);
+        Task<bool> DoCheckout();
     }
 }

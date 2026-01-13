@@ -24,5 +24,7 @@ namespace SklepWelniany.Models
 
         [Required]
         public int Quantity { get; set; }
+
+        public double UnitPrice { get; set; }
     }
 }

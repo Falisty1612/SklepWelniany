@@ -44,11 +44,13 @@ namespace SklepWelniany.Repositories
                 }
                 else
                 {
+                    var product = _db.Products.Find(productId);
                     cartItem = new CartDetail
                     {
                         ProductId = productId,
                         CartId = cart.Id,
-                        Quantity = qty
+                        Quantity = qty,
+                        UnitPrice = product.Price
                     };
                     _db.CartDetails.Add(cartItem);
                 }
@@ -157,6 +159,58 @@ namespace SklepWelniany.Repositories
         //    return data.Count;
         //}
 
+        public async Task<bool> DoCheckout()
+        {
+            using var transaction = _db.Database.BeginTransaction();
+            try
+            {
+                //move cart data to past orders and remove old cart data
+                //entry -> order, orderdetail
+                //remove cart data
+                var userId = GetUserId();
+                if (string.IsNullOrEmpty(userId))
+                    throw new Exception("User not logged in");
+                var cart = await GetCart(userId);
+                if (cart is null)
+                    throw new Exception("Invalid cart");
+                var cartDetail = _db.CartDetails.Where(a => a.CartId == cart.Id).ToList();
+
+                if (cartDetail.Count == 0)
+                    throw new Exception("Cart is empty");
+                // !!!!!!!!! SWITCH TO ENUM FOR MANAGING OrderStatus !!!!!!!!
+                var order = new Order
+                {
+                    UserId = userId,
+                    CreateDate = DateTime.UtcNow,
+                    OrderStatusId = 1, //pending
+                };
+                _db.Orders.Add(order);
+                _db.SaveChanges();
+
+                foreach (var item in cartDetail)
+                {
+                    var orderDetail = new OrderDetail
+                    {
+                        ProductId = item.ProductId,
+                        OrderId = order.Id,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.UnitPrice
+                    };
+                    _db.OrderDetails.Add(orderDetail);
+                }
+                await _db.SaveChangesAsync();
+
+                //removing old cart
+                _db.CartDetails.RemoveRange(cartDetail);
+                _db.SaveChanges();
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         private string GetUserId()
         {
             var principal = _httpContextAccessor.HttpContext.User;
