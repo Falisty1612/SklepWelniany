@@ -32,12 +32,8 @@
                                 TypeName = type.ProductType
                             }
                             ).ToListAsync();
-            ////Obsolete:
-            //// Filtrowanie po stronie klienta - nieoptymalne!!!!!
-            //if (typeId > 0)
-            //{
-            //    products = products.Where(a=>a.TypeId == typeId).ToList();
-            //}
+
+
             return products;
         }
     }
