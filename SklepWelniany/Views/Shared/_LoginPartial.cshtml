@@ -2,20 +2,17 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span id="cartCount" class="badge text-bg-info"></span>
-                <i class="bi bi-cart2 text-white"></i>
-            </a>
-        </li>
-    }
+    <li class="nav-item">
+        <a class="nav-link" href="#">
+            <span id="cartCount" class="badge text-bg-info"></span>
+            <i class="bi bi-cart2 text-white"></i>
+        </a>
+    </li>
 
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!
+        <a id="username" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!
             @if(User.IsInRole("Admin"))
             {
                 <span>(Admin)</span>
