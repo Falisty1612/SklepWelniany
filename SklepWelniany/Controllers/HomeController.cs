@@ -1,14 +1,33 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SklepWelniany.Models;
+using SklepWelniany.Models.DTOs;
+using System.Diagnostics;
 
 namespace SklepWelniany.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ILogger<HomeController> _logger;
+        private readonly IHomeRepository _homeRepository;
+
+        public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository)
         {
-            return View();
+            _logger = logger;
+            _homeRepository = homeRepository; // Iniekcja homeRepository w kontrolerze
+        }
+
+        public async Task<IActionResult> Index(string sterm="",int typeId=0)
+        {
+            IEnumerable<Product> products = await _homeRepository.GetProducts(sterm,typeId);
+            IEnumerable<Models.Type> types = await _homeRepository.Types();
+            ProductDisplayModel productModel = new ProductDisplayModel
+            {
+                Products = products,
+                Types = types
+            };
+
+
+            return View(productModel);
         }
 
         public IActionResult Privacy()

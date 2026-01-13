@@ -1,6 +1,6 @@
 ﻿namespace SklepWelniany.Repositories
 {
-    public class HomeRepository
+    public class HomeRepository : IHomeRepository
     {
         private readonly ApplicationDbContext _db;
 
@@ -8,14 +8,18 @@
         {
             _db = db;
         }
+
+        public async Task<IEnumerable<Models.Type>> Types()
+        {
+            return await _db.Types.ToListAsync();
+        }
         public async Task<IEnumerable<Product>> GetProducts(string sTerm= "", int typeId = 0)
         {
             sTerm = sTerm.ToLower();
             IEnumerable<Product> products = await (from product in _db.Products
                             join type in _db.Types
                             on product.TypeId equals type.Id
-                            where string.IsNullOrEmpty(sTerm) || (product != null && product.ProductName.ToLower().StartsWith(sTerm))
-
+                            where string.IsNullOrWhiteSpace(sTerm) || (product != null && product.ProductName.ToLower().StartsWith(sTerm))
                             select new Product
                             {
                                 Id = product.Id,
