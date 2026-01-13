@@ -17,7 +17,7 @@ System umożliwia:
 
 ## Wymagania systemowe
 
-- .NET 8 lub nowszy  
+- .NET 10 lub nowszy  
 - SQL Server (LocalDB lub inna instancja SQL Server)  
 - SQL Server Management Studio 2021  
 - Visual Studio 2022 lub nowsze (projekt tworzony w Visual Studio 2025)
@@ -140,6 +140,3 @@ Dostępne endpointy:
 API korzysta z tej samej bazy danych oraz warstwy Entity Framework co aplikacja MVC.
 
 ---
-
-Dokumentacja przygotowana na potrzeby projektu ASP.NET MVC.
-
