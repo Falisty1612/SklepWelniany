@@ -19,7 +19,9 @@
             IEnumerable<Product> products = await (from product in _db.Products
                             join type in _db.Types
                             on product.TypeId equals type.Id
-                            where string.IsNullOrWhiteSpace(sTerm) || (product != null && product.ProductName.ToLower().StartsWith(sTerm))
+                            where 
+                                (string.IsNullOrWhiteSpace(sTerm) || (product != null && product.ProductName.ToLower().Contains(sTerm)))
+                                && (typeId == 0 || product.TypeId == typeId)
                             select new Product
                             {
                                 Id = product.Id,
@@ -30,12 +32,12 @@
                                 TypeName = type.ProductType
                             }
                             ).ToListAsync();
-
-            // Filtrowanie po stronie klienta - nieoptymalne!!!!!
-            if (typeId > 0)
-            {
-                products = products.Where(a=>a.TypeId == typeId).ToList();
-            }
+            ////Obsolete:
+            //// Filtrowanie po stronie klienta - nieoptymalne!!!!!
+            //if (typeId > 0)
+            //{
+            //    products = products.Where(a=>a.TypeId == typeId).ToList();
+            //}
             return products;
         }
     }
