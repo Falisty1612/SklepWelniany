@@ -52,9 +52,27 @@
                     <b>Kategoria: </b> @product.TypeName
                 </p>
                 
-                <a href="#" class="btn btn-primary">Add to cart</a>
+                <button type="button" onclick="add(@product.Id)" class="btn btn-primary">Add to cart</button>
                 </div>
         </div>
     </div>
     }
 </div>
+
+@section Scripts{
+    <script>
+        async function add(productId){
+            try{
+                var response = await fetch('/Cart/AddItem?productId=${productId}');
+                if(response.status == 200){
+                    var result = await response.json();
+                    var cartCountEl = document.getElementById("cartCount");
+                    cartCountEl.innerHTML = result;
+                }
+            }
+            catch(err){
+                console.log(err);
+            }
+        }
+    </script>
+}
