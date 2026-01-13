@@ -48,11 +48,15 @@ namespace SklepWelniany.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout(CheckoutModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(model);
+
+            // Przekazujemy model do repozytorium
             bool isCheckedOut = await _cartRepo.DoCheckout(model);
+
             if (!isCheckedOut)
                 return RedirectToAction(nameof(OrderFailure));
+
             return RedirectToAction(nameof(OrderSuccess));
         }
 

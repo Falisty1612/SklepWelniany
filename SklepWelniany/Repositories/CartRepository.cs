@@ -168,19 +168,18 @@ namespace SklepWelniany.Repositories
                 //entry -> order, orderdetail
                 //remove cart data
                 var userId = GetUserId();
-                if (string.IsNullOrEmpty(userId))
-                    throw new Exception("User not logged in");
+                if (string.IsNullOrEmpty(userId)) throw new Exception("User not logged in");
                 var cart = await GetCart(userId);
-                if (cart is null)
-                    throw new Exception("Invalid cart");
+                if (cart is null) throw new Exception("Invalid cart");
                 var cartDetail = _db.CartDetails.Where(a => a.CartId == cart.Id).ToList();
-
-                if (cartDetail.Count == 0)
-                    throw new Exception("Cart is empty");
+                if (cartDetail.Count == 0) throw new Exception("Cart is empty");
+                //---------------
                 var pendingRecord = _db.OrderStatuses.FirstOrDefault(s => s.StatusName == "Pending");
-                if (pendingRecord != null)
-                    throw new Exception("Order status does not have 'Pending' status");
-                
+                if (pendingRecord == null)
+                {
+                    throw new Exception("Order status 'Pending' does not exist in the database.");
+                }
+
                 var order = new Order
                 {
                     UserId = userId,
