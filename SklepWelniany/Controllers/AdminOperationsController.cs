@@ -16,7 +16,7 @@ namespace SklepWelniany.Controllers
 
         public async Task<IActionResult> AllOrders()
         {
-            var orders = await _userOrderRepository.UserOrders();
+            var orders = await _userOrderRepository.UserOrders(true);
             return View(orders);
         }
 
@@ -35,7 +35,7 @@ namespace SklepWelniany.Controllers
 
         public async Task<IActionResult> UpdatePaymentStatus(int orderId)
         {
-            var order = await _userOrderRepository.GetUserOrderById(orderId);
+            var order = await _userOrderRepository.GetOrderById(orderId);
             if (order == null)
             {
                 throw new InvalidOperationException($"Order with ID {orderId} not found.");

@@ -54,7 +54,7 @@ namespace SklepWelniany.Repositories
             var orders = _db.Orders.Include(x=>x.OrderStatus)
                                    .Include(x=>x.OrderDetails)
                                    .ThenInclude(x=>x.Product)
-                                   .ThenInclude(x=>x.TypeName)
+                                   .ThenInclude(x=>x.Type)
                                    .AsQueryable();
             if (!getAll)
             {
