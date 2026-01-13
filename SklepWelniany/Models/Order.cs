@@ -22,6 +22,27 @@ namespace SklepWelniany.Models
 
         public bool IsDeleted { get; set; } = false;
 
+        [Required]
+        [MaxLength(30)]
+        public string? Name { get; set; }
+
+        [Required]
+        [MaxLength(30)]
+        [EmailAddress]
+        public string? Email { get; set; }
+
+        [Phone]
+        public string? PhoneNumber { get; set; }
+
+        [Required]
+        [MaxLength(200)]
+        public string? Address { get; set; }
+
+        [Required]
+        [MaxLength(30)]
+        public string? PaymentMethod { get; set; }
+
+        public bool IsPaid { get; set; } = false;
 
         public OrderStatus OrderStatus { get; set; }
 

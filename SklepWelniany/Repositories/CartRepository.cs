@@ -159,7 +159,7 @@ namespace SklepWelniany.Repositories
         //    return data.Count;
         //}
 
-        public async Task<bool> DoCheckout()
+        public async Task<bool> DoCheckout(CheckoutModel model)
         {
             using var transaction = _db.Database.BeginTransaction();
             try
@@ -177,12 +177,21 @@ namespace SklepWelniany.Repositories
 
                 if (cartDetail.Count == 0)
                     throw new Exception("Cart is empty");
-                // !!!!!!!!! SWITCH TO ENUM FOR MANAGING OrderStatus !!!!!!!!
+                var pendingRecord = _db.OrderStatuses.FirstOrDefault(s => s.StatusName == "Pending");
+                if (pendingRecord != null)
+                    throw new Exception("Order status does not have 'Pending' status");
+                
                 var order = new Order
                 {
                     UserId = userId,
                     CreateDate = DateTime.UtcNow,
-                    OrderStatusId = 1, //pending
+                    Name = model.Name,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    PaymentMethod = model.PaymentMethod,
+                    Address = model.Address,
+                    IsPaid = false,
+                    OrderStatusId = pendingRecord.Id
                 };
                 _db.Orders.Add(order);
                 _db.SaveChanges();
