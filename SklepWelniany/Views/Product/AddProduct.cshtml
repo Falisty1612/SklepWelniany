@@ -1,0 +1,43 @@
+﻿@model ProductDTO
+@{
+
+}
+
+<div style="width:50%;">
+
+    <h2> Dodaj Produkt </h2>
+    <a asp-action="Index" asp-controller="Product" class="btn btn-primary">Powrót</a>
+
+    <form asp-action="AddProduct" enctype="multipart/form-data">
+        
+        <div class="my-2">
+            <label>Produkt*</label>
+            <input type="text" class="form-control" asp-for="ProductName" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+
+        <div class="my-2">
+            <label>Kategoria*</label>
+            <select class="form-control" asp-for="TypeId" asp-items="Model.TypeList">
+                <option value="">Wybierz Kategorię</option>
+            </select>
+            <span asp-validation-for="TypeId" class="text-danger"></span>
+        </div>
+
+        <div class="my-2">
+            <label>Cena*</label>
+            <input type="number" class="form-control" asp-for="Price" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="my-2">
+            <label>Zdjęcie</label>
+            <input type="file" class="form-control" asp-for="ImageFile" />
+        </div>
+
+        <div class="my-2">
+            <button type="submit" class="btn btn-info">Dodaj</button>
+        </div>
+
+    </form>
+</div>

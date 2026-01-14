@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Product>
+@{
+}
+
+<h3>Produkty</h3>
+
+<a asp-action="AddProduct" asp-controller="Product" class="btn btn-primary">Dodaj więcej</a>
+
+@if (Model?.Count() > 0)
+{
+    <table class="table table-striped my-2">
+        <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Type</th>
+            <th>Price</th>
+            <th>Action</th>
+            <th></th>
+        </tr>
+
+        @foreach(var product in Model)
+        {
+            <tr>
+                <td>
+                    @if(string.IsNullOrWhiteSpace(product.Image))
+                    {
+                        <img style="width:50%;height:150px" src="/images/noimage.jpg" class="card-img-top" alt="product image" />
+                    }
+                    else
+                    {
+                        <img style="width:50%;height:150px" src="/images/@product.Image" class="card-img-top" alt="product image" />
+                    }
+                </td>
+                <td>@product.ProductName</td>
+                <td>@product.TypeName</td> 
+                <td>@product.Price</td>
+                <td>
+                    <a asp-action="UpdateProduct" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-success">Edytuj</a>
+                    <a asp-action="DeleteProduct" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-danger"
+                        onsubmit="return window.confirm('Czy na pewno chcesz usunąć ten produkt?')">Usuń</a>
+                </td>
+            </tr>
+        }
+    )
+
+    </table>
+}
+else
+{
+    <h3>Brak produktów do wyświetlenia.</h3>
+}
+}

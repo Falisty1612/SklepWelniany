@@ -24,6 +24,6 @@ namespace SklepWelniany.Models.DTOs
 
         public IFormFile? ImageFile { get; set; }
         
-        public IEnumerable<SelectListItem>? GenreList { get; set; }
+        public IEnumerable<SelectListItem>? TypeList { get; set; }
     }
 }
