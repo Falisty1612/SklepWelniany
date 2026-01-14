@@ -22,6 +22,7 @@ builder.Services.AddTransient<IUserOrderRepository,UserOrderRepository>();
 builder.Services.AddTransient<IStockRepository,StockRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddTransient<ITypeRepository, TypeRepository>();
 
 var app = builder.Build();
 using(var scope = app.Services.CreateScope())
