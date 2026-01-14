@@ -1,6 +1,6 @@
 # SklepWelniany 
 
-Aplikacja webowa typu **ASP.NET Core MVC** przedstawiająca prosty sklep internetowy. Projekt został wykonany na podstawie tutorialu krok po kroku (system e-commerce) oraz dostosowany do wymagań projektowych. Aplikacja demonstruje działanie koszyka zakupowego, autoryzacji użytkowników oraz operacji CRUD z wykorzystaniem **Entity Framework Core** i bazy danych **SQL Server**.
+Aplikacja webowa typu **ASP.NET Core MVC** przedstawiająca prosty sklep internetowy. Aplikacja demonstruje działanie koszyka zakupowego, autoryzacji użytkowników oraz operacji CRUD z wykorzystaniem **Entity Framework Core** i bazy danych **SQL Server**.
 
 > **Projekt nie zawiera integracji z bramką płatności – skupia się na logice sklepu, koszyku oraz zamówieniach.**
 
@@ -16,8 +16,8 @@ System umożliwia:
 - dodawanie produktów do koszyka,
 - składanie zamówień,
 - autoryzację użytkowników (administrator /użytkownik),
-- zarządzanie produktami przez administratora,                                       **## -------------------------------------------------------------------------**
-- dostęp do **REST API CRUD** dla encji **Product**.                                 **## -------------------------------------------------------------------------**
+- zarządzanie produktami przez administratora,                                      
+- dostęp do **REST API CRUD** dla encji **Product**.                                 
 
 ---
 
