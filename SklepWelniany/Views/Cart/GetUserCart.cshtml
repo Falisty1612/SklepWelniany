@@ -35,9 +35,6 @@
                     <td>@(item.Product.Price) zł x @item.Quantity</td>
                     <td>@(item.Product.Price*item.Quantity) zł</td>
                     <td>
-                        
-
-
                         <a class="btn btn-info" href="/Cart/AddItem?productId=@item.ProductId&&redirect=1">+</a>
                         <a class="btn btn-info" href="/Cart/RemoveItem?productId=@item.ProductId">-</a>
                     </td>
