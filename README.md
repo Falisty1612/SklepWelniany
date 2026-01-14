@@ -146,16 +146,16 @@ Aplikacja wykorzystuje **Entity Framework Core** do trwałego zapisu danych.    
 
 **Relacje między encjami:**                                                                              **## -------------------------------------------------------------------------**
 
-- Category → Product (jeden do wielu)
+- Category -> Product (jeden do wielu)
 Jedna kategoria może zawierać wiele produktów.
 
-- User → Order (jeden do wielu)
+- User -> Order (jeden do wielu)
 Jeden użytkownik może złożyć wiele zamówień.
 
-- Order → OrderItem (jeden do wielu)
+- Order -> OrderItem (jeden do wielu)
 Jedno zamówienie może zawierać wiele pozycji.
 
-- Product → OrderItem (jeden do wielu)
+- Product -> OrderItem (jeden do wielu)
 Jeden produkt może występować w wielu zamówieniach.
 
 Encja OrderItem przechowuje informacje o ilości oraz cenie produktu w momencie składania zamówienia,
@@ -163,7 +163,7 @@ co umożliwia poprawne odwzorowanie logiki sklepu internetowego.
 
 ---
 
-## REST API (CRUD)                                                                                   **## -------------------------------------------------------------------------**
+## REST API (CRUD)
 
 Projekt zawiera kontroler **REST API** dla encji **Product**.
 
@@ -183,5 +183,11 @@ API korzysta z tej samej bazy danych oraz warstwy Entity Framework co aplikacja 
 
 - Wojciech Pruchnicki
 - Szymon Rogowski
+
+## Digramy bazy danych
+
+![Diagram 1]("diagramy bd/1screen.png")
+![Diagram 2]("diagramy bd/2screen.png")
+![Diagram 3]("diagramy bd/3screen.png")
 
 
