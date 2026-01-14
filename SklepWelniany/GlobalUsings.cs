@@ -5,3 +5,4 @@ global using SklepWelniany.Models.DTOs;
 global using SklepWelniany.Repositories;
 global using Microsoft.AspNetCore.Identity;
 global using SklepWelniany.Constants;
+global using SklepWelniany.Shared;

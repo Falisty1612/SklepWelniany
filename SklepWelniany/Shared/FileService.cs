@@ -39,7 +39,7 @@
         {
             var wwwPath = _environment.WebRootPath;
             var fileNameWithPath = Path.Combine(wwwPath, "images\\", fileName);
-            if (File.Exists(fileNameWithPath))
+            if (!File.Exists(fileNameWithPath))
             {
                 throw new FileNotFoundException(fileName);
             }

@@ -32,7 +32,7 @@ namespace SklepWelniany.Controllers
             var typeSelectList = (await _typeRepo.GetTypes())
                 .Select(type => new SelectListItem
                 {
-                    Text = type.Name,
+                    Text = type.ProductType,
                     Value = type.Id.ToString()
                 });
             ProductDTO productToAdd = new() { TypeList = typeSelectList };
@@ -46,7 +46,7 @@ namespace SklepWelniany.Controllers
             var typeSelectList = (await _typeRepo.GetTypes())
                     .Select(type => new SelectListItem
                     {
-                        Text = type.TypeName,
+                        Text = type.ProductType,
                         Value = type.Id.ToString()
                     });
             productToAdd.TypeList = typeSelectList;
@@ -108,7 +108,7 @@ namespace SklepWelniany.Controllers
             var typeSelectList = (await _typeRepo.GetTypes())
                     .Select(type => new SelectListItem
                     {
-                        Text = type.TypeName,
+                        Text = type.ProductType,
                         Value = type.Id.ToString(),
                         Selected = type.Id==product.TypeId
                     });
@@ -129,7 +129,7 @@ namespace SklepWelniany.Controllers
         {
             var typeSelectList = (await _typeRepo.GetTypes()).Select(type => new SelectListItem
             {
-                Text = type.TypeName,
+                Text = type.ProductType,
                 Value = type.Id.ToString(),
                 Selected = type.Id == productToUpdate.TypeId
             });
