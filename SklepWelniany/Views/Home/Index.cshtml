@@ -48,8 +48,10 @@
             <h5 class="card-title">@product.ProductName</h5>
                 <div class="addcartbutton mt-auto">
                 <p class="card-text">
-                    <b>Cena: </b>@product.Price zł <br />
                     <b>Kategoria: </b> @product.TypeName
+                    <b>Ilośc w magazynie: @product.Quantity</b>
+                    <b>Cena: </b>@product.Price zł <br />
+
                 </p>
                      <a onclick="add(@product.Id)" class="btn btn-primary">Dodaj do koszyka</a>
                 </div>

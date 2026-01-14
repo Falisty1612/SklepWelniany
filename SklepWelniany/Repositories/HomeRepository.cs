@@ -19,6 +19,12 @@
             IEnumerable<Product> products = await (from product in _db.Products
                             join type in _db.Types
                             on product.TypeId equals type.Id
+
+                            join stock in _db.Stocks
+                            on product.Id equals stock.ProductId
+                            into product_stocks
+                            from productWithStock in product_stocks.DefaultIfEmpty()
+
                             where 
                                 (string.IsNullOrWhiteSpace(sTerm) || (product != null && product.ProductName.ToLower().Contains(sTerm)))
                                 && (typeId == 0 || product.TypeId == typeId)
@@ -29,7 +35,8 @@
                                 Price = product.Price,
                                 ProductName = product.ProductName,
                                 TypeId = product.TypeId,
-                                TypeName = type.ProductType
+                                TypeName = type.ProductType,
+                                Quantity = productWithStock == null ? 0 : productWithStock.Quantity
                             }
                             ).ToListAsync();
 
