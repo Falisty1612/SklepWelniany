@@ -186,8 +186,8 @@ API korzysta z tej samej bazy danych oraz warstwy Entity Framework co aplikacja 
 
 ## Digramy bazy danych
 
-![Diagram 1]("diagramy%bd/1screen.png")
-![Diagram 2]("diagramy%bd/2screen.png")
-![Diagram 3]("diagramy%bd/3screen.png")
+![Diagram 1]("diagramy_bd/1screen.png")
+![Diagram 2]("diagramy_bd/2screen.png")
+![Diagram 3]("diagramy_bd/3screen.png")
 
 
