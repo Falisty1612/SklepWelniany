@@ -49,11 +49,20 @@
                 <div class="addcartbutton mt-auto">
                 <p class="card-text">
                     <b>Kategoria:  @product.TypeName </b><br />
-                    <b>Ilośc w magazynie: @product.Quantity</b><br />
+                    @* <b>Ilośc w magazynie: @product.Quantity</b><br /> *@
                     <b>Cena: </b>@product.Price zł <br />
 
                 </p>
-                     <a onclick="add(@product.Id)" class="btn btn-primary">Dodaj do koszyka</a>
+                    @* CHOWANIE OPCJI DODANIA DO KOSZYKA GDY BRAK W MAGAZYNIE *@
+                    @* @if (product.Quantity > 0)
+                    {
+                        <button type="button" onclick="add(@product.Id)" class="btn btn-primary">Dodaj do koszyka</button>
+                    }
+                    else
+                    {
+                        <span style="padding: 5px 8px; color:grey;" >Wyprzedane</span>
+                    } *@
+                    <a onclick="add(@product.Id)" class="btn btn-primary">Dodaj do koszyka</a>
                 </div>
         </div>
     </div>
