@@ -12,7 +12,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a id="username" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!
+        <a id="username" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Witaj, @User.Identity?.Name!
             @if(User.IsInRole("Admin"))
             {
                 <span>(Admin)</span>
