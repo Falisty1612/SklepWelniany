@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace SklepWelniany.Repositories
+﻿namespace SklepWelniany.Repositories
 {
     public class CartRepository : ICartRepository
     {
@@ -24,7 +22,7 @@ namespace SklepWelniany.Repositories
             {
                 if (string.IsNullOrEmpty(userId))
                 {
-                    throw new Exception("User not logged in");
+                    throw new UnauthorizedAccessException("User not logged in");
                 }
                 var cart = await GetCart(userId);
                 if (cart is null)
@@ -73,19 +71,19 @@ namespace SklepWelniany.Repositories
             {
                 if (string.IsNullOrEmpty(userId))
                 {
-                    throw new Exception("User not logged in");
+                    throw new UnauthorizedAccessException("User not logged in");
                 }
                 var cart = await GetCart(userId);
                 if (cart is null)
                 {
-                    throw new Exception("Invalid cart");
+                    throw new InvalidOperationException("Invalid cart");
                 }
                 //cart details:
                 var cartItem = _db.CartDetails
                                   .FirstOrDefault(a => a.CartId == cart.Id && a.ProductId == productId);
                 if(cartItem is null)
                 {
-                    throw new Exception("No items in cart");
+                    throw new InvalidOperationException("No items in cart");
                 }
                 else if (cartItem.Quantity == 1)
                 {
@@ -110,11 +108,16 @@ namespace SklepWelniany.Repositories
             var userId = GetUserId();
             if(userId == null)
             {
-                throw new Exception("Invalid user");
+                throw new InvalidOperationException("Invalid user ID");
             }
             var cart = await _db.Carts
-                        .Include(a => a.CartDetails).ThenInclude(a => a.Product)
-                        .ThenInclude(a => a.Type).Where(a => a.UserId == userId)
+                        .Include(a => a.CartDetails)
+                        .ThenInclude(a => a.Product)
+                        .ThenInclude(a => a.Stock)
+                        .Include(a => a.CartDetails)
+                        .ThenInclude(a => a.Product)
+                        .ThenInclude(a => a.Type)
+                        .Where(a => a.UserId == userId)
                         .FirstOrDefaultAsync();
             return cart;
 
@@ -168,16 +171,16 @@ namespace SklepWelniany.Repositories
                 //entry -> order, orderdetail
                 //remove cart data
                 var userId = GetUserId();
-                if (string.IsNullOrEmpty(userId)) throw new Exception("User not logged in");
+                if (string.IsNullOrEmpty(userId)) throw new UnauthorizedAccessException("User not logged in");
                 var cart = await GetCart(userId);
-                if (cart is null) throw new Exception("Invalid cart");
+                if (cart is null) throw new InvalidOperationException("Invalid cart");
                 var cartDetail = _db.CartDetails.Where(a => a.CartId == cart.Id).ToList();
-                if (cartDetail.Count == 0) throw new Exception("Cart is empty");
+                if (cartDetail.Count == 0) throw new InvalidOperationException("Cart is empty");
                 //---------------
                 var pendingRecord = _db.OrderStatuses.FirstOrDefault(s => s.StatusName == "Pending");
                 if (pendingRecord == null)
                 {
-                    throw new Exception("Order status 'Pending' does not exist in the database.");
+                    throw new InvalidOperationException("Order status 'Pending' does not exist in the database.");
                 }
 
                 var order = new Order
@@ -205,6 +208,20 @@ namespace SklepWelniany.Repositories
                         UnitPrice = item.UnitPrice
                     };
                     _db.OrderDetails.Add(orderDetail);
+
+                    var stock = await _db.Stocks.FirstOrDefaultAsync(a => a.ProductId == item.ProductId);
+                    if(stock == null)
+                    {
+                        throw new InvalidOperationException("Stock is null");
+                    }
+
+                    //if (item.Quantity > stock.Quantity)
+                    //{
+                    //    throw new InvalidOperationException($"W magazynie nie ma wystarczającej ilości produktu o ID {item.ProductId}. Dostępna ilość: {stock.Quantity}, żądana ilość: {item.Quantity}");
+                    //}
+
+                    stock.Quantity -= item.Quantity;
+
                 }
                 await _db.SaveChangesAsync();
 
@@ -219,6 +236,7 @@ namespace SklepWelniany.Repositories
                 return false;
             }
         }
+
         private string GetUserId()
         {
             var principal = _httpContextAccessor.HttpContext.User;

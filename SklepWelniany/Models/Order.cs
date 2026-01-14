@@ -46,7 +46,6 @@ namespace SklepWelniany.Models
 
         public OrderStatus OrderStatus { get; set; }
 
-
         public List<OrderDetail> OrderDetails { get; set; }
 
     }
