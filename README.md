@@ -16,17 +16,15 @@ System umożliwia:
 - dodawanie produktów do koszyka,
 - składanie zamówień,
 - autoryzację użytkowników (administrator /użytkownik),
-- zarządzanie produktami przez administratora,                                      
-- dostęp do **REST API CRUD** dla encji **Product**.                                 
+- zarządzanie produktami przez administratora.                                
 
 ---
 
 ## Tech stack 
 
 - ASP.NET Core MVC (.NET 8 lub nowszy)
-- Entity Framework Core (ORM)                                                          **## -------------------------------------------------------------------------**
 - MS SQL Server
-- ASP.NET Identity (uwierzytelnianie i role)                                           **## -------------------------------------------------------------------------**
+- ASP.NET Identity (uwierzytelnianie i role)                                        
 - Bootstrap (warstwa frontendowa)
 
 ---
@@ -52,7 +50,7 @@ git clone https://github.com/Falisty1612/SklepWelniany
 
 ### 2. Konfiguracja projektu
 
-1. Otwórz plik rozwiązania `.sln` w Visual Studio.
+1. Otwórz plik rozwiązania `.slnx` w Visual Studio.
 2. Otwórz plik `appsettings.json`.
 3. Zmień nazwę serwera bazy danych ("YOUR_SERVER_NAME") w connection string:
 
@@ -92,11 +90,13 @@ Update-Database
 - **Email:** `admin@localhost.com`
 - **Hasło:** `Admin@99`
 
-Administrator może:                                                                                     **## -------------------------------------------------------------------------**
+Administrator może:                                                                                     
 - dodawać produkty,
 - edytować produkty,
 - usuwać produkty,
-- zarządzać danymi w systemie.
+- zarządzać danymi w systemie,
+- wyświeltać zamówinia i edytować
+- zarządzać stanem magazynu
 
 ---
 
@@ -128,44 +128,25 @@ Zastosowane mechanizmy walidacji:
 - `[MaxLength]`
 - `[NotMapped]`
 - `[Table]`
-- mechanizmy autoryzacji i uwierzytelniania użytkowników.                                       **## -------------------------------------------------------------------------**
+- mechanizmy autoryzacji i uwierzytelniania użytkowników.                                      
 
 ---
 
 ## Struktura bazy danych 
 
-Aplikacja wykorzystuje **Entity Framework Core** do trwałego zapisu danych.                     **## -------------------------------------------------------------------------**
+Aplikacja wykorzystuje **Entity Framework Core** do trwałego zapisu danych.                 
 
-**Encje w systemie:**                                                                              **## -------------------------------------------------------------------------**
+Encje w systemie i relacje między nimi:                                                                        
 
-- **User** – użytkownicy aplikacji (ASP.NET Identity),
-- **Product** – produkty dostępne w sklepie,
-- **Category** – kategorie produktów,
-- **Order** – zamówienia składane przez użytkowników,
-- **OrderItem** – pozycje zamówień (encja pośrednia).
+**Na dole pliku zamieszono screeny z diagramami**
 
-**Relacje między encjami:**                                                                              **## -------------------------------------------------------------------------**
 
-- Category -> Product (jeden do wielu)
-Jedna kategoria może zawierać wiele produktów.
-
-- User -> Order (jeden do wielu)
-Jeden użytkownik może złożyć wiele zamówień.
-
-- Order -> OrderItem (jeden do wielu)
-Jedno zamówienie może zawierać wiele pozycji.
-
-- Product -> OrderItem (jeden do wielu)
-Jeden produkt może występować w wielu zamówieniach.
-
-Encja OrderItem przechowuje informacje o ilości oraz cenie produktu w momencie składania zamówienia,
-co umożliwia poprawne odwzorowanie logiki sklepu internetowego.
 
 ---
 
-## REST API (CRUD)
+##API (CRUD)
 
-Projekt zawiera kontroler **REST API** dla encji **Product**.
+Projekt zawiera kontroler ** API** dla encji **Product**.
 
 Dostępne endpointy:
 
