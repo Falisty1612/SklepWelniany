@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<Order>
 @{
-    Layout = "_AdminLayout";
+    // Layout = "_AdminLayout";
     ViewData["Title"] = "AllOrders";
 }
 
 <div style="width:100%" class="mt-2">
 
-    <h3>Zamówienia</h3>
+    <h2>Zamówienia</h2>
 
     @if (Model !=null && Model.Count() > 0)
     {
