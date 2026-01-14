@@ -9,12 +9,13 @@ namespace SklepWelniany.Data
         {
             var userMgr = service.GetService<UserManager<IdentityUser>>();
             var roleMgr = service.GetService<RoleManager<IdentityRole>>();
+            var context = service.GetService<ApplicationDbContext>();
 
-            // adding roles to db
+            // Dodawanie Ról
             await roleMgr.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
             await roleMgr.CreateAsync(new IdentityRole(Roles.User.ToString()));
 
-            // create admin user
+            // Tworzenie Admina
             var admin = new IdentityUser
             {
                 UserName = "admin@localhost.com",
@@ -28,6 +29,32 @@ namespace SklepWelniany.Data
                 await userMgr.CreateAsync(admin, "Admin@99");
                 await userMgr.AddToRoleAsync(admin, Roles.Admin.ToString());
             }
+
+            // Kategorie
+            var typesToAdd = new List<string>
+            {
+                "Kardigan",
+                "Sweter",
+                "Czapka",
+                "Szalik",
+                // DODANIE KATEGORII / DODANIE TYPU
+            };
+
+            foreach (var typeName in typesToAdd)
+            {
+                // sprawdzenie czy kategoria juz istnieje
+                var exists = await context.Types
+                    .AnyAsync(t => t.ProductType.ToLower() == typeName.ToLower());
+
+                if (!exists)
+                {
+                    await context.Types.AddAsync(new SklepWelniany.Models.Type
+                    {
+                        ProductType = typeName
+                    });
+                }
+            }
+            await context.SaveChangesAsync();
         }
     }
 }

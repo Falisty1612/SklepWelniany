@@ -25,11 +25,12 @@ builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddTransient<ITypeRepository, TypeRepository>();
 
 var app = builder.Build();
-using(var scope = app.Services.CreateScope())
-//First time admin creation 
-//{
-//    await DbSeeder.SeedDefaultData(scope.ServiceProvider);
-//}
+
+// admin creation 
+using (var scope = app.Services.CreateScope())
+{
+    await DbSeeder.SeedDefaultData(scope.ServiceProvider);
+}
 // ---------------------------------------------------
 
 
