@@ -34,7 +34,7 @@ namespace SklepWelniany.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UpdatePaymentStatus(int orderId)
+        public async Task<IActionResult> UpdateOrderStatus(int orderId)
         {
             var order = await _userOrderRepository.GetOrderById(orderId);
             if (order == null)
@@ -62,7 +62,7 @@ namespace SklepWelniany.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatePaymentStatus(UpdateOrderStatusModel data)
+        public async Task<IActionResult> UpdateOrderStatus(UpdateOrderStatusModel data)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace SklepWelniany.Controllers
                 // Log the exception 
                 TempData["msg"] = $"Wystąpił błąd {ex.Message}";
             }
-            return RedirectToAction(nameof(UpdatePaymentStatus), new { orderId = data.OrderId });
+            return RedirectToAction(nameof(UpdateOrderStatus), new { orderId = data.OrderId });
         }
 
     }

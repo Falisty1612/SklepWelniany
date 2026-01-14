@@ -33,6 +33,7 @@ namespace SklepWelniany.Models
 
         public List<CartDetail> CartDetails { get; set; }
 
+        public Stock Stock { get; set; }
 
         [NotMapped]
         public string TypeName { get; set; }

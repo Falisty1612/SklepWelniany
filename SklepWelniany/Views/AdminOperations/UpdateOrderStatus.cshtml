@@ -1,12 +1,12 @@
 ﻿@model UpdateOrderStatusModel
 @{
-    ViewData["Title"] = "UpdatePaymentStatus";
+    ViewData["Title"] = "UpdateOrderStatus";
 }
 
 <h2>Update payment status</h2>
 <a class="my-2 btn btn-primary" asp-action="AllOrders">Back</a>
 
-<form style="width: 50%;" asp-action="UpdatePaymentStatus" class="pt-2" method="post">
+<form style="width: 50%;" asp-action="UpdateOrderStatus" class="pt-2" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>  @* !!!!!!USUNAC POTEM!!!!!!!!!! *@
 
     <input type="hidden" asp-for="OrderId" />
